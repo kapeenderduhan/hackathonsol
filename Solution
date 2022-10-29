@@ -1,0 +1,48 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class Solution {
+    public static void main(String args[] ) throws Exception {
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       String input = br.readLine();
+       int m = Integer.parseInt(br.readLine());
+       int dis[][] = new int[26][26];
+       for( int i=0;i<26;i++){
+            for( int j=0;j< 26;j++){
+                dis[i][j]=Integer.MAX_VALUE;
+            }
+            dis[i][i]=0;
+       }
+       for( int i=1;i<=m;i++){
+           String temp[]= br.readLine().split(" ");
+           char source= temp[0].charAt(0);
+           char dest = temp[1].charAt(0);
+           int cost = Integer.parseInt(temp[2]);
+           dis[source-'a'][dest-'a']=cost;
+           dis[dest-'a'][source-'a']=cost;
+       }
+       for( int k=0;k<26;k++){
+            for( int i=0;i<26;i++){
+                for( int j=0;j<26;j++){
+                    if(dis[i][k]!=Integer.MAX_VALUE && dis[k][j]!=Integer.MAX_VALUE){
+                    dis[i][j]= Math.min(dis[i][j],dis[i][k]+ dis[k][j]);
+                    }
+                }
+            }
+       }
+      int i=0;
+      int j=input.length()-1;
+      long ans=0;
+      while(i<j){
+          if(input.charAt(i)==input.charAt(j)){
+              i++;
+              j--;
+              continue;
+          }
+          ans= ans+ dis[input.charAt(i)-'a'][input.charAt(j)-'a'];
+          i++;
+          j--;
+      }
+      System.out.println(ans);
+    }
+}
